@@ -8,7 +8,7 @@
 #define CLOSE_FAILED "Socket closing failed.."
 #define SHUTDOWN_FAILED "Socket shutdown failed.."
 #define RESPONSE_500 "HTTP/1.1 503 Service Unavailable\r\n"
-
+#define POLL_TIMEOUT 10000
 int Server::start() {
 
     if (running
@@ -48,7 +48,7 @@ void Server::listener() const {
     pfds.fd = socketFD;
     pfds.events = POLLIN;
     while (true) {
-        poll(&pfds, 1, -1);
+        poll(&pfds, 1, POLL_TIMEOUT);
         if (pfds.revents & POLLIN) {
             connectionFD = accept(socketFD, (struct sockaddr *) &clientAddress, &socketLength);
             if (connectionFD == -1) {
@@ -153,4 +153,5 @@ Server::Server(const char *ip, uint16_t port, unsigned long max_connections,
 #undef SET_OPT_FAILED
 #undef CLOSE_FAILED
 #undef SHUTDOWN_FAILED
-#undef RESPONSE_500 
+#undef RESPONSE_500
+#undef POLL_TIMEOUT
