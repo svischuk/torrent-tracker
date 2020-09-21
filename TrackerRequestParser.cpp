@@ -42,18 +42,30 @@ TrackerRequest TrackerRequestParser::parse(HTTPRequest &request) {
 
 int TrackerRequestParser::parseInfoHash(std::string str, TrackerRequest &request) {
 
-    replaceAll(str, "-", "%2D");
-    replaceAll(str, "_", "%5F");
-    replaceAll(str, ".", "%2E");
-    replaceAll(str, "~", "%7E");
-
+    for (unsigned long i=0; i < str.size() ; i++) {
+        unsigned char c=str.c_str()[i];
+        if (!std::isalnum(c)&&c!='%'){
+            char buf[3]{0, 0, 0};
+            char temp= toHex(c >> 4);
+            int index=0;
+            if (temp != 0){
+                buf[index++]='%';
+                buf[index++]=temp;
+            }
+            buf[index]= toHex(c);
+            str.replace(i,1,buf);
+        }
+    }
     std::for_each(str.begin(), str.end(), [](char &c) {
         c = static_cast<char>(std::toupper(c));
     });
     request.setInfoHash(str);
     return 0;
 }
-
+char TrackerRequestParser::toHex(unsigned char c){
+    auto t = c & 0xf;
+    return t += t < 10 ? '0' : 'A'-10;
+}
 int TrackerRequestParser::parsePort(const std::string &str, TrackerRequest &request) {
     unsigned short port = 0;
     int error = StringToPrimitivesParser::parse(str, &port);

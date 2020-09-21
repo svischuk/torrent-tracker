@@ -28,6 +28,8 @@ private:
     static int parseInfoHash(std::string str, TrackerRequest &request);
 
     static void replaceAll(std::string &str, const std::string &from, const std::string &to);
+
+    char static toHex(unsigned char c);
 };
 
 

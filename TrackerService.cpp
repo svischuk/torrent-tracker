@@ -19,6 +19,7 @@ void TrackerService::serve(Request &req, Response &res) {
     auto &response = static_cast<HTTPResponse &>(res);
     TrackerRequest trackerRequest = TrackerRequestParser::parse(request);
 
+    const auto &share = trackerRequest.getInfoHash();
     if (trackerRequest.getInfoHash().empty() ||
         !trackerRequest.getPort()) {
         response.setStatusCode(BAD_REQUEST);
@@ -26,7 +27,6 @@ void TrackerService::serve(Request &req, Response &res) {
     }
 
     auto peer = getPeer(trackerRequest);
-    const auto &share = trackerRequest.getInfoHash();
 
     repository.addPeer(share, peer);
 
