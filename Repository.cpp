@@ -38,8 +38,8 @@ Repository::Repository(unsigned long maxShares, unsigned long maxPeers) : maxSha
 std::unordered_set<Peer, Hash> Repository::getPeers(const std::string &shareHash) {
     lock.lock();
     std::unordered_set<Peer, Hash> result{};
-    if (peers.contains(shareHash)){
-        result= peers[shareHash].set;
+    if (peers.contains(shareHash)) {
+        result = peers[shareHash].set;
     }
     lock.unlock();
     return result;

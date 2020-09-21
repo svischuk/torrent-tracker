@@ -17,34 +17,39 @@ Peer TrackerService::getPeer(const TrackerRequest &request) {
 void TrackerService::serve(Request &req, Response &res) {
     auto &request = static_cast<HTTPRequest &>(req);
     auto &response = static_cast<HTTPResponse &>(res);
-    TrackerRequest trackerRequest = RequestParser::parse(request);
+    TrackerRequest trackerRequest = TrackerRequestParser::parse(request);
+
+    if (trackerRequest.getInfoHash().empty() ||
+        !trackerRequest.getPort()) {
+        response.setStatusCode(BAD_REQUEST);
+        return;
+    }
 
     auto peer = getPeer(trackerRequest);
     const auto &share = trackerRequest.getInfoHash();
-    if(trackerRequest.getPort()){
-        repository.addPeer(share, peer);
-    } else{
-        response.setStatusCode(BAD_REQUEST);
-    }
-    auto peers=repository.getPeers(share);
+
+    repository.addPeer(share, peer);
+
+    auto peers = repository.getPeers(share);
     const std::string &trackerId = trackerRequest.getTrackerID();
 
     auto requestNumWant = trackerRequest.getNumWant();
-    auto responseNumWant = requestNumWant == 0 || requestNumWant > numWant ?
+    auto responseNumWant = !requestNumWant || requestNumWant > numWant ?
                            numWant : requestNumWant;
     auto peersSize = responseNumWant > peers.size() ? peers.size() : responseNumWant;
     auto peersInBytes = peersSize * BINARY_PEER_LENGTH;
 
     char *peersArray = new char[peersInBytes];
     peersToArray(peers, peersSize, peersArray);
-    
+
     response.appendContent(getTextPart(peersInBytes, trackerId));
     response.appendContent(peersArray, peersInBytes);
     response.appendContent("e");
     delete[]  peersArray;
 
 }
-std::string TrackerService::getTextPart(unsigned long peersInBytes, const std::string& trackerId) const {
+
+std::string TrackerService::getTextPart(unsigned long peersInBytes, const std::string &trackerId) const {
     std::string response;
     response.append("d");
     if (!trackerId.empty()) {
@@ -62,6 +67,7 @@ std::string TrackerService::getTextPart(unsigned long peersInBytes, const std::s
     response.append(":");
     return response;
 }
+
 void TrackerService::peersToArray(const std::unordered_set<Peer, Hash> &vector, unsigned long numWant, char *res) {
     for (auto iterator = vector.begin(); iterator != vector.end() && numWant > 0; iterator++, numWant--) {
 

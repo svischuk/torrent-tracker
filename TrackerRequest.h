@@ -36,19 +36,19 @@ public:
 
 
 private:
-    std::string infoHash;
-    std::string peerID;
-    unsigned short port;
-    unsigned long uploaded;
-    unsigned long downloaded;
-    unsigned long left;
-    bool compact;
-    bool noPeerID;
+    std::string infoHash{};
+    std::string peerID{};
+    unsigned short port = 0;
+    unsigned long uploaded = 0;
+    unsigned long downloaded = 0;
+    unsigned long left = 0;
+    bool compact = false;
+    bool noPeerID = false;
     Event event;
-    unsigned int ip;
-    unsigned short numWant;
-    std::string key;
-    std::string trackerID;
+    unsigned int ip = 0;
+    unsigned short numWant = 0;
+    std::string key{};
+    std::string trackerID{};
 
 };
 

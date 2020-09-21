@@ -15,7 +15,7 @@
 #include "TrackerRequest.h"
 #include "HTTPResponse.h"
 #include "StringToPrimitivesParser.h"
-#include "RequestParser.h"
+#include "TrackerRequestParser.h"
 #include "Repository.h"
 #include "Service.h"
 
@@ -32,8 +32,11 @@ private:
     const unsigned long minInterval;
     const unsigned long numWant;
     Repository &repository;
+
     static void peersToArray(const std::unordered_set<Peer, Hash> &vector, unsigned long numWant, char *res);
+
     void serve(Request &req, Response &res) override;
+
     std::string getTextPart(unsigned long peersInBytes, const std::string &trackerId) const;
 
 };

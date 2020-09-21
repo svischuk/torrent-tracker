@@ -1,7 +1,7 @@
 #include "HTTPResponse.h"
 
 #define SPACE " "
-#define NL "\n"
+#define NL "\r\n"
 
 void HTTPResponse::appendContent(const char *src, unsigned long length) {
 

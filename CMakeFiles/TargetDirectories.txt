@@ -1,3 +1,0 @@
-/home/user/torrent-tracker/CMakeFiles/rebuild_cache.dir
-/home/user/torrent-tracker/CMakeFiles/edit_cache.dir
-/home/user/torrent-tracker/CMakeFiles/torrent_tracker.dir

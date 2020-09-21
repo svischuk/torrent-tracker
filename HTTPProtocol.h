@@ -11,7 +11,7 @@
 #include "Service.h"
 #include "HTTPResponse.h"
 #include "TrackerRequest.h"
-#include "RequestParser.h"
+#include "TrackerRequestParser.h"
 #include "HTTPRequest.h"
 
 class HTTPProtocol : public Protocol {

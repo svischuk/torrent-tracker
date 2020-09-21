@@ -21,9 +21,9 @@
 #define IP_V4_STR_LENGTH 16
 #define TIMEOUT 10000
 
-char ip[IP_V4_STR_LENGTH] = "127.0.0.1";
-unsigned short port = 8080;
-unsigned long headerMaxLength = 8*1024;
+char ip[IP_V4_STR_LENGTH] = "0.0.0.0";
+unsigned short port = 80;
+unsigned long headerMaxLength = 8 * 1024;
 unsigned long maxConnections = 30;
 unsigned long interval = 60;
 unsigned long minInterval = 60;
@@ -97,33 +97,35 @@ int readConfig() {
 #define DELIMETR ": "
 
 void showConfig() {
-    std::cout<<IP<<DELIMETR<<ip<<std::endl;
-    std::cout<<PORT<<DELIMETR<<port<<std::endl;
-    std::cout<<HEADER_MAX_LENGTH<<DELIMETR<<headerMaxLength<<std::endl;
-    std::cout<<MAX_CONNECTIONS<<DELIMETR<<maxConnections<<std::endl;
-    std::cout<<INTERVAL<<DELIMETR<<interval<<std::endl;
-    std::cout<<MIN_INTERVAL<<DELIMETR<<minInterval<<std::endl;
-    std::cout<<NUM_WANT<<DELIMETR<<numWant<<std::endl;
-    std::cout<<MAX_SHARES<<DELIMETR<<maxShares<<std::endl;
-    std::cout<<MAX_PEERS<<DELIMETR<<maxPeers<<std::endl;
+    std::cout << IP << DELIMETR << ip << std::endl;
+    std::cout << PORT << DELIMETR << port << std::endl;
+    std::cout << HEADER_MAX_LENGTH << DELIMETR << headerMaxLength << std::endl;
+    std::cout << MAX_CONNECTIONS << DELIMETR << maxConnections << std::endl;
+    std::cout << INTERVAL << DELIMETR << interval << std::endl;
+    std::cout << MIN_INTERVAL << DELIMETR << minInterval << std::endl;
+    std::cout << NUM_WANT << DELIMETR << numWant << std::endl;
+    std::cout << MAX_SHARES << DELIMETR << maxShares << std::endl;
+    std::cout << MAX_PEERS << DELIMETR << maxPeers << std::endl;
 }
-bool fileExist (const std::string& name) {
+
+bool fileExist(const std::string &name) {
     struct stat buffer{};
-    return (stat (name.c_str(), &buffer) == 0);
+    return (stat(name.c_str(), &buffer) == 0);
 }
+
 int main() {
 
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
     signal(SIGABRT, signalHandler);
-if (fileExist(CONFIG)){
-    int errors=readConfig();
-    if (errors) {
-        printf("Config file loaded with %d errors..\n",errors);
+    if (fileExist(CONFIG)) {
+        int errors = readConfig();
+        if (errors) {
+            printf("Config file loaded with %d errors..\n", errors);
+        } else {
+            printf("Config file loaded successfully..\n");
+        }
     } else {
-        printf("Config file loaded successfully..\n");
-    }
-    } else{
         printf("Config file not found. Using default settings..\n");
     }
     showConfig();

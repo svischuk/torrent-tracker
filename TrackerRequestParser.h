@@ -1,5 +1,5 @@
-#ifndef TORRENT_TRACKER_REQUESTPARSER_H
-#define TORRENT_TRACKER_REQUESTPARSER_H
+#ifndef TORRENT_TRACKER_TRACKERREQUESTPARSER_H
+#define TORRENT_TRACKER_TRACKERREQUESTPARSER_H
 
 #include <map>
 #include <regex>
@@ -10,7 +10,7 @@
 #include "StringToPrimitivesParser.h"
 #include "HTTPRequest.h"
 
-class RequestParser {
+class TrackerRequestParser {
 public:
     static TrackerRequest parse(HTTPRequest &request);
 
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //TORRENT_TRACKER_REQUESTPARSER_H
+#endif //TORRENT_TRACKER_TRACKERREQUESTPARSER_H
